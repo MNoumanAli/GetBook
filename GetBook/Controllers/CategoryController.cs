@@ -34,5 +34,39 @@ namespace GetBook.Controllers
             return View();
             
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null) return NotFound();
+            var category = _db.Category.FirstOrDefault(x => x.Id == id);
+            if(category == null) return NotFound();
+            return View(category);
+        }
+        [HttpPost]
+        public IActionResult Edit(Category category)
+        {
+            if(ModelState.IsValid)
+            {
+                _db.Category.Update(category);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(category);
+        }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null) return NotFound();
+            var category = _db.Category.FirstOrDefault(x => x.Id == id);
+            if (category == null) return NotFound();
+            return View(category);
+        }
+        [HttpPost]
+        public IActionResult Delete(Category category)
+        {
+            if (category == null) return NotFound();
+            _db.Category.Remove(category);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
