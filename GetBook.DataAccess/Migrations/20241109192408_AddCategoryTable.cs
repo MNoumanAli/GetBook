@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace GetBook.Migrations
+namespace GetBook.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTable : Migration

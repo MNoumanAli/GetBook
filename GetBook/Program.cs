@@ -1,4 +1,4 @@
-using GetBook.Data;
+using GetBook.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

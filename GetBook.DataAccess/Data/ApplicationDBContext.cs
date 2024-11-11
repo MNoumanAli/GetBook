@@ -1,7 +1,7 @@
 ﻿using GetBook.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace GetBook.Data
+namespace GetBook.DataAccess.Data
 {
     public class ApplicationDBContext : DbContext
     {
