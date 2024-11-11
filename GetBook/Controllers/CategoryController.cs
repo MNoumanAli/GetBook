@@ -29,6 +29,7 @@ namespace GetBook.Controllers
             {
                 _db.Category.Add(category);
                 _db.SaveChanges();
+                TempData["Success"] = "Category Created Successfully.";
                 return RedirectToAction("Index");
             }
             return View();
@@ -49,6 +50,7 @@ namespace GetBook.Controllers
             {
                 _db.Category.Update(category);
                 _db.SaveChanges();
+                TempData["Success"] = "Category Updated Successfully.";
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -66,6 +68,7 @@ namespace GetBook.Controllers
             if (category == null) return NotFound();
             _db.Category.Remove(category);
             _db.SaveChanges();
+            TempData["Success"] = "Category Deleted Successfully.";
             return RedirectToAction("Index");
         }
     }
