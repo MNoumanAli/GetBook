@@ -1,4 +1,5 @@
-﻿using GetBook.Data;
+﻿using GetBook.DataAccess.Data;
+using GetBook.DataAccess.Data.Repository.IRepository;
 using GetBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,15 +7,15 @@ namespace GetBook.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDBContext _db;
-        public CategoryController(ApplicationDBContext db) 
+        private readonly ICategoryRepository _categoryRepo;
+        public CategoryController(ICategoryRepository categoryRepo) 
         {
-            _db = db;
+            _categoryRepo = categoryRepo;
         }
 
         public IActionResult Index()
         {
-            var categories = _db.Category.ToList();
+            var categories = _categoryRepo.GetAll().ToList();
             return View(categories);
         }
 
@@ -27,8 +28,8 @@ namespace GetBook.Controllers
         {
             if(ModelState.IsValid)
             {
-                _db.Category.Add(category);
-                _db.SaveChanges();
+                _categoryRepo.Add(category);
+                _categoryRepo.Save();
                 TempData["Success"] = "Category Created Successfully.";
                 return RedirectToAction("Index");
             }
@@ -39,7 +40,7 @@ namespace GetBook.Controllers
         public IActionResult Edit(int? id)
         {
             if (id == null) return NotFound();
-            var category = _db.Category.FirstOrDefault(x => x.Id == id);
+            var category = _categoryRepo.Get(x => x.Id == id);
             if(category == null) return NotFound();
             return View(category);
         }
@@ -48,8 +49,8 @@ namespace GetBook.Controllers
         {
             if(ModelState.IsValid)
             {
-                _db.Category.Update(category);
-                _db.SaveChanges();
+                _categoryRepo.Update(category);
+                _categoryRepo.Save();
                 TempData["Success"] = "Category Updated Successfully.";
                 return RedirectToAction("Index");
             }
@@ -58,7 +59,7 @@ namespace GetBook.Controllers
         public IActionResult Delete(int? id)
         {
             if (id == null) return NotFound();
-            var category = _db.Category.FirstOrDefault(x => x.Id == id);
+            var category = _categoryRepo.Get(x => x.Id == id);
             if (category == null) return NotFound();
             return View(category);
         }
@@ -66,8 +67,8 @@ namespace GetBook.Controllers
         public IActionResult Delete(Category category)
         {
             if (category == null) return NotFound();
-            _db.Category.Remove(category);
-            _db.SaveChanges();
+            _categoryRepo.Remove(category);
+            _categoryRepo.Save();
             TempData["Success"] = "Category Deleted Successfully.";
             return RedirectToAction("Index");
         }
