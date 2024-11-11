@@ -7,15 +7,15 @@ namespace GetBook.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _categoryRepo;
-        public CategoryController(ICategoryRepository categoryRepo) 
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork) 
         {
-            _categoryRepo = categoryRepo;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            var categories = _categoryRepo.GetAll().ToList();
+            var categories = _unitOfWork.Category.GetAll().ToList();
             return View(categories);
         }
 
@@ -28,8 +28,8 @@ namespace GetBook.Controllers
         {
             if(ModelState.IsValid)
             {
-                _categoryRepo.Add(category);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Add(category);
+                _unitOfWork.Save();
                 TempData["Success"] = "Category Created Successfully.";
                 return RedirectToAction("Index");
             }
@@ -40,7 +40,7 @@ namespace GetBook.Controllers
         public IActionResult Edit(int? id)
         {
             if (id == null) return NotFound();
-            var category = _categoryRepo.Get(x => x.Id == id);
+            var category = _unitOfWork.Category.Get(x => x.Id == id);
             if(category == null) return NotFound();
             return View(category);
         }
@@ -49,8 +49,8 @@ namespace GetBook.Controllers
         {
             if(ModelState.IsValid)
             {
-                _categoryRepo.Update(category);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Update(category);
+                _unitOfWork.Category.Save();
                 TempData["Success"] = "Category Updated Successfully.";
                 return RedirectToAction("Index");
             }
@@ -59,7 +59,7 @@ namespace GetBook.Controllers
         public IActionResult Delete(int? id)
         {
             if (id == null) return NotFound();
-            var category = _categoryRepo.Get(x => x.Id == id);
+            var category = _unitOfWork.Category.Get(x => x.Id == id);
             if (category == null) return NotFound();
             return View(category);
         }
@@ -67,8 +67,8 @@ namespace GetBook.Controllers
         public IActionResult Delete(Category category)
         {
             if (category == null) return NotFound();
-            _categoryRepo.Remove(category);
-            _categoryRepo.Save();
+            _unitOfWork.Category.Remove(category);
+            _unitOfWork.Category.Save();
             TempData["Success"] = "Category Deleted Successfully.";
             return RedirectToAction("Index");
         }
