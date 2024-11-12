@@ -3,12 +3,13 @@ using GetBook.DataAccess.Data.Repository.IRepository;
 using GetBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GetBook.Controllers
+namespace GetBook.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryController(IUnitOfWork unitOfWork) 
+        public CategoryController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -26,7 +27,7 @@ namespace GetBook.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Add(category);
                 _unitOfWork.Save();
@@ -34,20 +35,20 @@ namespace GetBook.Controllers
                 return RedirectToAction("Index");
             }
             return View();
-            
+
         }
 
         public IActionResult Edit(int? id)
         {
             if (id == null) return NotFound();
             var category = _unitOfWork.Category.Get(x => x.Id == id);
-            if(category == null) return NotFound();
+            if (category == null) return NotFound();
             return View(category);
         }
         [HttpPost]
         public IActionResult Edit(Category category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Update(category);
                 _unitOfWork.Category.Save();
