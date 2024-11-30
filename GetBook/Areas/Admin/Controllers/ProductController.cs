@@ -2,6 +2,7 @@
 using GetBook.DataAccess.Data.Repository.IRepository;
 using GetBook.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GetBook.Areas.Admin.Controllers
 {
@@ -22,6 +23,13 @@ namespace GetBook.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> categoryList = _unitOfWork.Category.GetAll()
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                });
+            ViewBag.CategoryList = categoryList;
             return View();
         }
 
