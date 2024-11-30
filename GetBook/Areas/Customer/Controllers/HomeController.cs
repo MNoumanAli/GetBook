@@ -1,3 +1,4 @@
+using GetBook.DataAccess.Data.Repository.IRepository;
 using GetBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -8,15 +9,24 @@ namespace GetBook.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork unitOfWork, ILogger<HomeController> logger)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var allProducts = _unitOfWork.Product.GetAll().ToList();
+            return View(allProducts);
+        }
+
+        public IActionResult Detail(int id)
+        {
+            var product = _unitOfWork.Product.Get(x => x.Id == id);
+            return View(product);
         }
 
         public IActionResult Privacy()

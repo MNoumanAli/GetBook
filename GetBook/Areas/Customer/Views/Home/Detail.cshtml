@@ -1,0 +1,58 @@
+﻿@model Product
+
+<div class="row pb-2">
+    <h2 class="text-primary">@Model.Title</h2>
+    <hr />
+</div>
+
+<form>
+    <div class="p-3 m-4">
+        <input hidden asp-for="Id" class="form-control">
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="Author"></label>
+            <input disabled asp-for="Author" class="form-control">
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="Description"></label>
+            <input disabled asp-for="Description" class="form-control">
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="ISBN"></label>
+            <input disabled asp-for="ISBN" class="form-control">
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="ListPrice"></label>
+            <input disabled asp-for="ListPrice" class="form-control">
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="Price50"></label>
+            <input disabled asp-for="Price50" class="form-control">
+
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="Price100"></label>
+            <input disabled asp-for="Price100" class="form-control">
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="Price"></label>
+            <input disabled asp-for="Price" class="form-control">
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="CategoryId"></label>
+            <input disabled asp-for="CategoryId" class="form-control">
+
+        </div>
+        <div class="mb-3 row text-dark">
+            <label class="p-0" asp-for="ImageURL"></label>
+            <input disabled asp-for="ImageURL" class="form-control">
+
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to list</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
