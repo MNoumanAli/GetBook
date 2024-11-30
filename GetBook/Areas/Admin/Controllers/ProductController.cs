@@ -63,19 +63,36 @@ namespace GetBook.Areas.Admin.Controllers
             if (id == null || id == 0) return NotFound();
             var product = _unitOfWork.Product.Get(option => option.Id == id);
             if (product == null) return NotFound();
-            return View(product);
+            ProductVM productVM = new ProductVM()
+            {
+                Product = product,
+                CategoryList = _unitOfWork.Category.GetAll()
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                })
+            };
+
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(ProductVM productvm)
         {
             if(ModelState.IsValid)
             {
-                _unitOfWork.Product.Update(product);
+                _unitOfWork.Product.Update(productvm.Product);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            return View();
+            productvm.CategoryList = _unitOfWork.Category.GetAll()
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                });
+            return View(productvm);
         }
         public IActionResult Delete(int? id)
         {
