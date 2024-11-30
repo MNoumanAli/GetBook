@@ -1,6 +1,7 @@
 ﻿using GetBook.DataAccess.Data.Repository;
 using GetBook.DataAccess.Data.Repository.IRepository;
 using GetBook.Models;
+using GetBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -29,21 +30,32 @@ namespace GetBook.Areas.Admin.Controllers
                     Text = c.Name,
                     Value = c.Id.ToString(),
                 });
-            ViewBag.CategoryList = categoryList;
-            return View();
+            ProductVM productVM = new ProductVM()
+            {
+                CategoryList = categoryList,
+                Product = new Product(),
+            };
+
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(ProductVM productvm)
         {
             if(ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(product);
+                _unitOfWork.Product.Add(productvm.Product);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
 
             }
-            return View();
+            productvm.CategoryList = _unitOfWork.Category.GetAll()
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                });
+            return View(productvm);
         }
 
         public IActionResult Edit(int? id)
